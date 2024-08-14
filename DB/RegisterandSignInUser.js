@@ -36,14 +36,12 @@ UserRouter.post('/', async (req, res) => {
 
       // Initialize the user's post in Firestore
       await setDoc(doc(db, 'Posts', email), {
-        PostDetails: arrayUnion({
-          PostID: randomId,
-          CreatedBy: email,
-          Text: '',
-          ImageURL: '',
-          comments: 0,
-          likes: 0,
-        }),
+        PostID: randomId,
+        CreatedBy: email,
+        Text: '',
+        ImageURL: '',
+        comments: 0,
+        likes: 0,
       })
 
       // Send success response with user and post information
