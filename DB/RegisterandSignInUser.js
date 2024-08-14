@@ -1,6 +1,10 @@
 import { Router } from 'express'
 import { v4 as uuidv4 } from 'uuid'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth'
 import { doc, setDoc, arrayUnion } from 'firebase/firestore'
 import { auth, db } from '../FireBaseConfig.js'
 
@@ -62,4 +66,30 @@ UserRouter.post('/', async (req, res) => {
   }
 })
 
+UserRouter.post('/Login', async (req, res) => {
+  try {
+    const { email, password } = req.body
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    if (userCredential) {
+      res.status(200).json(userCredential.user.uid)
+    } else {
+      res.status(400).json('USER NOT REGISTERED')
+    }
+  } catch (error) {
+    res.status(404).json(`error : ${error}`)
+  }
+})
+
+UserRouter.get('/Signout', async (_, res) => {
+  try {
+    await signOut(auth)
+    res.status(200).json(true)
+  } catch (error) {
+    res.status(404).json(`error : ${error}`)
+  }
+})
 export default UserRouter
