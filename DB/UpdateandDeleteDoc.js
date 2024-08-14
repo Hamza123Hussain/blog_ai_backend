@@ -1,5 +1,5 @@
 import express from 'express'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../FireBaseConfig.js'
 const Updated_Delete_Router = express.Router()
 Updated_Delete_Router.put('/', async (req, res) => {
@@ -40,4 +40,18 @@ Updated_Delete_Router.put('/', async (req, res) => {
   }
 })
 
+Updated_Delete_Router.delete('/', async (req, res) => {
+  try {
+    const { POSTID } = req.body
+    await deleteDoc(doc(db, 'Posts', POSTID))
+    res.status(200).json(true)
+  } catch (error) {
+    console.error('Error updating post:', error)
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+      error: error.message,
+    })
+  }
+})
 export default Updated_Delete_Router
