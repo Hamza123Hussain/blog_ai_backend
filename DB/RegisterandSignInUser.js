@@ -73,7 +73,7 @@ UserRouter.post('/Login', async (req, res) => {
       password
     )
     if (userCredential) {
-      res.status(200).json(userCredential.user.uid)
+      res.status(200).json(userCredential.user)
     } else {
       res.status(400).json('USER NOT REGISTERED')
     }
