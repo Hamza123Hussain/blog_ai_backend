@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { doc, setDoc, arrayUnion } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../FireBaseConfig.js'
 
 const UserRouter = Router()
@@ -33,16 +33,6 @@ UserRouter.post('/', async (req, res) => {
         userID: userId,
         CreatedAt: Date.now(),
       })
-
-      // // Initialize the user's post in Firestore
-      // await setDoc(doc(db, 'Posts', email), {
-      //   PostID: randomId,
-      //   CreatedBy: email,
-      //   Text: '',
-      //   ImageURL: '',
-      //   comments: [],
-      //   likes: [],
-      // })
 
       // Send success response with user and post information
       res.status(201).json({
