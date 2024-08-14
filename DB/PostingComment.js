@@ -41,4 +41,36 @@ CommentRouter.post('/', async (req, res) => {
   }
 })
 
+CommentRouter.delete('/', async (req, res) => {
+  try {
+    const { POSTID, CommentID } = req.body
+
+    // Fetch the post document from Firestore
+    const postDoc = await getDoc(doc(db, 'Posts', POSTID))
+
+    if (postDoc.exists()) {
+      const postData = postDoc.data()
+      const updatedComments = postData.comments.filter(
+        (comment) => comment.CommentID !== CommentID
+      )
+
+      // Update the post document with the new comments array
+      await updateDoc(doc(db, 'Posts', POSTID), {
+        comments: updatedComments,
+      })
+
+      res.status(200).json({ Message: 'Comment Deleted' })
+    } else {
+      res.status(404).json({ Message: 'Post Not Found' })
+    }
+  } catch (error) {
+    console.error('Error deleting comment:', error)
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+      error: error.message,
+    })
+  }
+})
+
 export default CommentRouter
