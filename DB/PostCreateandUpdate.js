@@ -32,11 +32,10 @@ Create_Update_Router.post('/', async (req, res) => {
   const randomId = uuidv4()
 
   try {
-    const { text } = req.body
-    const email = req.user.email // Get the email from the authenticated user
+    const { text, email } = req.body
 
     // Add a new document to the 'Posts' collection
-    await addDoc(collection(db, 'Posts'), {
+    await addDoc(collection(db, 'Posts', email), {
       CreatedBy: email,
       PostID: randomId,
       Text: text,
