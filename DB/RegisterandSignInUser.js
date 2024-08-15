@@ -8,7 +8,6 @@ import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../FireBaseConfig.js'
 
 const UserRouter = Router()
-
 UserRouter.post('/', async (req, res) => {
   try {
     const { email, password, Name } = req.body
@@ -37,9 +36,16 @@ UserRouter.post('/', async (req, res) => {
       res.status(400).json({ status: 'error', message: 'User creation failed' })
     }
   } catch (error) {
-    // Handle errors and send error response
-    console.error('Error creating user or post:', error)
-    res.status(500).json({ status: 'error', message: 'Internal server error' })
+    if (error.code === 'auth/email-already-in-use') {
+      // Specific error for existing email
+      res.status(400).json({ status: 'error', message: 'Email already in use' })
+    } else {
+      // Handle other errors
+      console.error('Error creating user:', error)
+      res
+        .status(500)
+        .json({ status: 'error', message: 'Internal server error' })
+    }
   }
 })
 
