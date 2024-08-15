@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import { v4 as uuidv4 } from 'uuid'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,10 +10,8 @@ import { auth, db } from '../FireBaseConfig.js'
 const UserRouter = Router()
 
 UserRouter.post('/', async (req, res) => {
-  const randomId = uuidv4()
-
   try {
-    const { email, password, name } = req.body
+    const { email, password, Name } = req.body
 
     // Create a new user with Firebase Authentication
     const userCredential = await createUserWithEmailAndPassword(
@@ -28,22 +25,14 @@ UserRouter.post('/', async (req, res) => {
 
       // Add user details to Firestore
       await setDoc(doc(db, 'Users', userId), {
-        Name: name,
+        Name: Name,
         email: email,
         userID: userId,
         CreatedAt: Date.now(),
       })
 
       // Send success response with user and post information
-      res.status(201).json({
-        status: 'success',
-        message: 'User and post created successfully',
-        user: {
-          userID: userId,
-          email: email,
-          name: name,
-        },
-      })
+      res.status(201).json(true)
     } else {
       res.status(400).json({ status: 'error', message: 'User creation failed' })
     }
