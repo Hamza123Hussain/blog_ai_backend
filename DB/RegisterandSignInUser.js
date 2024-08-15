@@ -4,7 +4,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../FireBaseConfig.js'
 
 const UserRouter = Router()
@@ -46,18 +46,30 @@ UserRouter.post('/', async (req, res) => {
 UserRouter.post('/Login', async (req, res) => {
   try {
     const { email, password } = req.body
+
+    // Sign in the user with email and password
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     )
+
+    // If sign-in is successful
     if (userCredential) {
-      res.status(200).json(userCredential.user)
+      // Retrieve user data from Firestore
+      const userDoc = await getDoc(doc(db, 'Users', userCredential.user.uid))
+
+      if (userDoc) {
+        // Send user data as JSON response
+        res.status(200).json(userDoc.data())
+      } else {
+        res.status(404).json({ error: 'User data not found' })
+      }
     } else {
-      res.status(400).json('USER NOT REGISTERED')
+      res.status(400).json({ error: 'User not registered' })
     }
   } catch (error) {
-    res.status(404).json(`error : ${error}`)
+    res.status(500).json({ error: `Server error: ${error.message}` })
   }
 })
 
