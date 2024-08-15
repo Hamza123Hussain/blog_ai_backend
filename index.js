@@ -6,6 +6,7 @@ import Create_Get_Router from './DB/GettingandCreatingPost.js'
 import Updated_Delete_Router from './DB/UpdateandDeleteDoc.js'
 import CommentRouter from './DB/PostingComment.js'
 import cors from 'cors'
+import ResetPass from './DB/PaswordReset.js'
 const App = express()
 
 App.use(express.json())
@@ -15,6 +16,7 @@ App.use('/api/Posts', Create_Get_Router)
 App.use('/api/User', UserPosts)
 App.use('/api/Update&Delete', Updated_Delete_Router)
 App.use('/api/Comments', CommentRouter)
+App.use('/api/ResetPass', ResetPass)
 
 App.listen(Port, () => {
   console.log(`RUNNING ON ${Port}`)
