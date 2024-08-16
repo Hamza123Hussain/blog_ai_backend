@@ -12,7 +12,7 @@ Create_Get_Router.post('/', async (req, res) => {
   const randomId = uuidv4()
 
   try {
-    const { text, Name, title } = req.body
+    const { text, Name, title, email } = req.body
 
     // Create a document reference with the specific ID
     const docRef = doc(db, 'Posts', randomId)
@@ -20,7 +20,8 @@ Create_Get_Router.post('/', async (req, res) => {
     // Set the document data
     await setDoc(docRef, {
       Title: title,
-      CreatedBy: Name,
+      CreatedBy: email,
+      UserName: Name,
       PostID: randomId,
       Text: text,
       comments: [],
