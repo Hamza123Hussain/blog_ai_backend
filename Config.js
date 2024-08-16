@@ -6,6 +6,7 @@ const projectId = process.env.REACT_APP_FIREBASE_PROJECT_ID
 const storageBucket = process.env.REACT_APP_FIREBASE_STORAGE_BUCKET
 const messagingSenderId = process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID
 const appId = process.env.REACT_APP_FIREBASE_APP_ID
+const Gemni_Api = process.env.Google_Gemni_APi
 
 export {
   Port,
@@ -15,4 +16,5 @@ export {
   projectId,
   storageBucket,
   messagingSenderId,
+  Gemni_Api,
 }
