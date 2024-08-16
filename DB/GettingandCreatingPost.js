@@ -12,32 +12,36 @@ Create_Get_Router.post('/', async (req, res) => {
   const randomId = uuidv4()
 
   try {
-    const { text, email } = req.body
+    const { text, Name, title } = req.body
 
     // Create a document reference with the specific ID
     const docRef = doc(db, 'Posts', randomId)
 
     // Set the document data
     await setDoc(docRef, {
-      CreatedBy: email,
+      Title: title,
+      CreatedBy: Name,
       PostID: randomId,
       Text: text,
       comments: [],
-      // likes: [],
+      CreatedAt: Date.now(), // likes: [],
     })
 
     // Send success response
-    res.status(201).json({
-      status: 'success',
-      message: 'Post added successfully',
-      post: {
-        PostID: randomId,
-        CreatedBy: email,
-        Text: text,
-        comments: [],
-        // likes: [],
-      },
-    })
+    res.status(201).json(
+      true
+      //   {
+      //   // status: 'success',
+      //   // message: 'Post added successfully',
+      //   // // post: {
+      //   //   PostID: randomId,
+      //   //   CreatedBy: email,
+      //   //   Text: text,
+      //   //   comments: [],
+      //   //   // likes: [],
+      //   // },
+      // }
+    )
   } catch (error) {
     console.error('Error adding post:', error)
     res.status(500).json({
