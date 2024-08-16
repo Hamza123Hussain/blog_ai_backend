@@ -19,13 +19,13 @@ Updated_Delete_Router.put('/', async (req, res) => {
 
     if (updatedDoc.exists()) {
       // Send back the updated document data
-      res.status(200).json({
-        message: 'UPDATED',
-        post: {
-          id: updatedDoc.id,
-          ...updatedDoc.data(),
-        },
-      })
+      res.status(200).json(
+        true
+        // post: {
+        //   id: updatedDoc.id,
+        //   ...updatedDoc.data(),
+        // },
+      )
     } else {
       // In case the document does not exist (shouldn't happen if we just updated it)
       res.status(404).json({ message: 'Document not found' })
@@ -40,13 +40,13 @@ Updated_Delete_Router.put('/', async (req, res) => {
   }
 })
 
-Updated_Delete_Router.delete('/', async (req, res) => {
+Updated_Delete_Router.delete('/:POSTID', async (req, res) => {
   try {
-    const { POSTID } = req.body
+    const { POSTID } = req.params // Retrieve POSTID from URL parameters
     await deleteDoc(doc(db, 'Posts', POSTID))
-    res.status(200).json(true)
+    res.status(200).json({ success: true })
   } catch (error) {
-    console.error('Error updating post:', error)
+    console.error('Error deleting post:', error)
     res.status(500).json({
       status: 'error',
       message: 'Internal server error',
@@ -54,4 +54,5 @@ Updated_Delete_Router.delete('/', async (req, res) => {
     })
   }
 })
+
 export default Updated_Delete_Router
