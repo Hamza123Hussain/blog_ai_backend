@@ -27,7 +27,7 @@ CommentRouter.post('/', async (req, res) => {
         }),
       })
 
-      res.status(200).json({ Message: 'Comment Done' })
+      res.status(200).json(true)
     } else {
       res.status(404).json({ Message: 'NO USER' })
     }
