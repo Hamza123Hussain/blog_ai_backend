@@ -1,23 +1,33 @@
 import express from 'express'
 import { collection, doc, getDocs, setDoc } from 'firebase/firestore'
-
 import { v4 as uuidv4 } from 'uuid'
-import { db } from '../FireBaseConfig.js'
+import { db, Storage } from '../FireBaseConfig.js'
+import multer from 'multer'
+import { ref, uploadBytes } from 'firebase/storage'
 
 const Create_Get_Router = express.Router()
 
-// Create_Update_Router.use(verifyToken)
+// Set up multer for handling file uploads
+const upload = multer({ storage: multer.memoryStorage() })
 
-Create_Get_Router.post('/', async (req, res) => {
+Create_Get_Router.post('/', upload.single('BlogImage'), async (req, res) => {
   const randomId = uuidv4()
 
   try {
     const { text, Name, title, email, UserImage } = req.body
+    const BlogImage = req.file
+    let BlogImageURL = ''
 
-    // Create a document reference with the specific ID
+    if (BlogImage) {
+      const imagePath = `BLOGIMAGES/${email}/${BlogImage.originalname}`
+      const BlogImageRef = ref(Storage, imagePath)
+      const imageBuffer = BlogImage.buffer
+      await uploadBytes(BlogImageRef, imageBuffer)
+      BlogImageURL = await getDownloadURL(BlogImageRef)
+    }
+
     const docRef = doc(db, 'Posts', randomId)
 
-    // Set the document data
     await setDoc(docRef, {
       Title: title,
       CreatedBy: email,
@@ -27,17 +37,17 @@ Create_Get_Router.post('/', async (req, res) => {
       comments: [],
       CreatedAt: Date.now(),
       UserImage,
+      BlogImageURL: BlogImageURL || '',
       // likes: [], future work
     })
 
-    // Send success response
     res.status(201).json(true)
   } catch (error) {
     console.error('Error adding post:', error)
     res.status(500).json({
       status: 'error',
       message: 'Internal server error',
-      error: error.message, // Include specific error message
+      error: error.message,
     })
   }
 })
