@@ -5,7 +5,7 @@ import { db } from '../FireBaseConfig.js'
 const GetRouter = express.Router()
 
 // Function to retrieve a single user by userID
-GetRouter.get('/user', async (req, res) => {
+GetRouter.get('/api/GetUser/user', async (req, res) => {
   try {
     const { userID } = req.query // Extract userID from the request parameters
 
