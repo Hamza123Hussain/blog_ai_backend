@@ -1,17 +1,31 @@
 import express from 'express'
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
-import { db } from '../FireBaseConfig.js'
+import { db, Storage } from '../FireBaseConfig.js'
+import multer from 'multer'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 const Updated_Delete_Router = express.Router()
-Updated_Delete_Router.put('/', async (req, res) => {
+const upload = multer({ storage: multer.memoryStorage() })
+Updated_Delete_Router.put('/', upload.single('BlogImage'), async (req, res) => {
   try {
-    const { Text, POSTID } = req.body
+    const { text, title, email, POSTID } = req.body
+    const BlogImage = req.file
+    let BlogImageURL = ''
 
+    if (BlogImage) {
+      const imagePath = `BLOGIMAGES/${email}/${BlogImage.originalname}`
+      const BlogImageRef = ref(Storage, imagePath)
+      const imageBuffer = BlogImage.buffer
+      await uploadBytes(BlogImageRef, imageBuffer)
+      BlogImageURL = await getDownloadURL(BlogImageRef)
+    }
     // Reference to the specific document
     const postDocRef = doc(db, 'Posts', POSTID)
 
     // Update the document with new text
     await updateDoc(postDocRef, {
-      Text: Text,
+      Title: title,
+      Text: text,
+      BlogImageURL: BlogImageURL || '',
     })
 
     // Retrieve the updated document
