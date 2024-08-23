@@ -5,7 +5,7 @@ import { db } from '../FireBaseConfig.js'
 const GetRouter = express.Router()
 
 // Function to retrieve a single user by userID
-GetRouter.get('/user/:userID', async (req, res) => {
+GetRouter.get('/user', async (req, res) => {
   try {
     const { userID } = req.query // Extract userID from the request parameters
 
@@ -17,7 +17,7 @@ GetRouter.get('/user/:userID', async (req, res) => {
 
     if (userDoc.exists()) {
       // If the user document exists, send the user data
-      return res.status(200).json({ success: true, data: userDoc.data() })
+      return res.status(200).json(userDoc.data())
     } else {
       // If the user document does not exist, send an error message
       return res.status(404).json({ success: false, message: 'User not found' })
