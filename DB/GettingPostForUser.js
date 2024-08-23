@@ -6,19 +6,19 @@ const UserPosts = express.Router()
 
 UserPosts.get('/', async (req, res) => {
   try {
-    // Extract the email from the query parameters
-    const { email } = req.query
+    // Extract the Name from the query parameters
+    const { Name } = req.query
 
-    // Validate the email parameter
-    if (!email || typeof email !== 'string') {
+    // Validate the Name parameter
+    if (!Name || typeof Name !== 'string') {
       return res.status(400).json({
         status: 'error',
-        message: 'Invalid email parameter',
+        message: 'Invalid Name parameter',
       })
     }
 
-    // Define the query to fetch documents where CreatedBy matches the provided email
-    const q = query(collection(db, 'Posts'), where('CreatedBy', '==', email))
+    // Define the query to fetch documents where CreatedBy matches the provided Name
+    const q = query(collection(db, 'Posts'), where('CreatedBy', '==', Name))
 
     // Execute the query
     const querySnapshot = await getDocs(q)

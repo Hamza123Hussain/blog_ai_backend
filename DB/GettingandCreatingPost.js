@@ -3,7 +3,7 @@ import { collection, doc, getDocs, setDoc } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid'
 import { db, Storage } from '../FireBaseConfig.js'
 import multer from 'multer'
-import { ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 const Create_Get_Router = express.Router()
 
@@ -14,7 +14,7 @@ Create_Get_Router.post('/', upload.single('BlogImage'), async (req, res) => {
   const randomId = uuidv4()
 
   try {
-    const { text, Name, title, email, UserImage } = req.body
+    const { text, Name, title, email, UserName, UserImage } = req.body
     const BlogImage = req.file
     let BlogImageURL = ''
 
@@ -30,7 +30,7 @@ Create_Get_Router.post('/', upload.single('BlogImage'), async (req, res) => {
 
     await setDoc(docRef, {
       Title: title,
-      CreatedBy: email,
+      CreatedBy: UserName,
       UserName: Name,
       PostID: randomId,
       Text: text,
