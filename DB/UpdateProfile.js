@@ -56,8 +56,7 @@ UpdateRouter.post('/', upload.single('image'), async (req, res) => {
 
     // Send a success response
     return res.status(201).json({
-      success: true,
-      message: 'User updated successfully',
+      Name,
       imageUrl: imageUrl || null,
     })
   } catch (error) {
