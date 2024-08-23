@@ -2,6 +2,7 @@ import { updateDoc, doc } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import express from 'express'
 import multer from 'multer'
+import { db, Storage } from '../FireBaseConfig.js'
 
 const UpdateRouter = express.Router()
 // Set up multer for handling file uploads
