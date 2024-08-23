@@ -9,6 +9,8 @@ import Create_Get_Router from './DB/GettingandCreatingPost.js'
 import Get_router from './DB/GettingDoc.js'
 import Updated_Delete_Router from './DB/UpdateandDeleteDoc.js'
 import UserPosts from './DB/GettingPostForUser.js'
+import UpdateRouter from './DB/UpdateProfile.js'
+import GetRouter from './DB/GetUser.js'
 
 const App = express()
 const corsOptions = {
@@ -26,6 +28,8 @@ App.use(`/api/Posts`, Create_Get_Router)
 App.use('/api/Comments', CommentRouter)
 App.use('/Api/Get', Get_router)
 App.use('/api/Update&Delete', Updated_Delete_Router)
+App.use('/api/UpdateProfile', UpdateRouter)
+App.use('/api/GetUser', GetRouter)
 App.listen(Port, () => {
   console.log(`RUNNING ON ${Port}`)
 })
