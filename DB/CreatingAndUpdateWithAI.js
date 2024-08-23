@@ -8,14 +8,16 @@ AI_Router.post('/', async (req, res) => {
     const { text, title } = req.body
 
     // Create the prompt for generating the blog title
-    const BlogTitlePrompt = `Read the ${title} for the description that I have given for the blog. Just give me the Title in plain string and do not include any symbols, just alphanumeric, that you think is the best for the Blog and no other text, just one single title.`
+    const BlogTitlePrompt = `Based on the ${title} I have given for the blog, suggest a single, concise title for the blog post. Provide only one title that is straightforward and relevant to the ${title}. The title should be in plain text, alphanumeric only, without any special characters or symbols. Do not include any additional explanations or suggestions, just the title.
+`
 
     // Generate the blog title using Gemini AI
     const Gemni_Response = await chatSessions.sendMessage(BlogTitlePrompt)
     const BlogTitleAi = Gemni_Response.response.text()
 
     // Create the prompt for generating the blog description
-    const CommentDescriptionPrompt = `Read the ${BlogTitleAi} and the ${text} given and then provide me just the description for the blog and nothing else. Do not include any symbols or hashs. Just make the description alpha numeric`
+    const CommentDescriptionPrompt = `Read the blog title "${BlogTitleAi}" and the text "${text}" given, and then provide me just the blog description. Ensure the description is concise and captures the essence of the text in plain alpha-numeric text. Do not include any symbols, hashtags, or additional formatting.
+`
 
     // Generate the blog description using Gemini AI
     const Gemni_Response2 = await chatSessions.sendMessage(
