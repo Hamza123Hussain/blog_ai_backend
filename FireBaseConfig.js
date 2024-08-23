@@ -9,6 +9,8 @@ import {
   projectId,
   storageBucket,
 } from './Config.js'
+import { getStorage } from 'firebase/storage'
+import { getAuth } from 'firebase/auth'
 // import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
@@ -26,3 +28,6 @@ const app = initializeApp(firebaseConfig)
 
 export const db = getFirestore(app)
 // export const Auth = getAuth(app);
+
+export const Storage = getStorage(app)
+export const auth = getAuth(app)
