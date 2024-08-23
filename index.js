@@ -11,9 +11,13 @@ import Updated_Delete_Router from './DB/UpdateandDeleteDoc.js'
 import UserPosts from './DB/GettingPostForUser.js'
 
 const App = express()
+const corsOptions = {
+  origin: true, // Allow all origins https://notes-app-node-next-9x72.vercel.app/
+  optionsSuccessStatus: 200, // For legacy browser support
+}
 
 App.use(express.json())
-App.use(cors())
+App.use(cors(corsOptions))
 App.use('/api/AI', AI_Router)
 App.use('/api/Users', UserRouter)
 App.use('/api/User', UserPosts)
