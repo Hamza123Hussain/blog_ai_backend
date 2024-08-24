@@ -4,13 +4,13 @@ import { db } from '../FireBaseConfig.js'
 
 const GetRouter = express.Router()
 
-// Function to retrieve a single user by UserName
+// Function to retrieve a single user by userID
 GetRouter.get('/user', async (req, res) => {
   try {
-    const { UserName } = req.query // Extract UserName from the request parameters
+    const { userID } = req.query // Extract userID from the request parameters
 
     // Reference to the user document
-    const userDocRef = doc(db, 'Users', UserName)
+    const userDocRef = doc(db, 'Users', userID)
 
     // Fetch the user document
     const userDoc = await getDoc(userDocRef)
