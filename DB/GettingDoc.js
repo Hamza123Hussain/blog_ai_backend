@@ -21,9 +21,7 @@ Get_router.get('/', async (req, res) => {
     // Check if the document exists
     if (!docSnap.exists()) {
       // Return dummy data when no document is found
-      return res
-        .status(404)
-        .json({ message: 'Post not found', data: dummyData })
+      return res.status(404).json(false)
     }
 
     // Return the document data
