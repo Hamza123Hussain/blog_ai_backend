@@ -14,7 +14,7 @@ Create_Get_Router.post('/', upload.single('BlogImage'), async (req, res) => {
   const randomId = uuidv4()
 
   try {
-    const { text, Name, title, email, UserName, UserImage } = req.body
+    const { text, Name, title, email, UserName, UserImage, UserID } = req.body
     const BlogImage = req.file
     let BlogImageURL = ''
 
@@ -37,6 +37,7 @@ Create_Get_Router.post('/', upload.single('BlogImage'), async (req, res) => {
       comments: [],
       CreatedAt: Date.now(),
       UserImage,
+      UserID,
       BlogImageURL: BlogImageURL || '',
       // likes: [], future work
     })
